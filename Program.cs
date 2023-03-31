@@ -1,90 +1,77 @@
-﻿using Final_Project;
+﻿using System;
+using System.Linq;
 
-
-class program
+class Program
 {
-    public static void RecommendBook(List<Author> authors)
-    {
+    static string[][] authors = {
+        new[] { "Emily Henry", "Helen Hoang", "Ali Hazelwood" },
+        new[] { "Khalid Hosseini", "Colleen Hoover", "Renee Ahdieh" },
+        new[] { "Bell Hooks", "Illan Pappe", "Vaclav Smil" }
+    };
 
-
-        //prompts for genre selection 
-        Console.WriteLine(" What kind of genre would you like to read?");
-        Console.WriteLine("1. Romance");
-        Console.WriteLine("2. Fiction");
-        Console.WriteLine("3. Non-fiction");
-        // reading user's choice 
-        string genreChoice = Console.ReadLine();
-        //prompt for selecting an author 
-        Console.WriteLine("Please select an author from the following options:");
-        Console.WriteLine("1.Jane Austin");
-        Console.WriteLine("2. Khalid Hoessini");
-        Console.WriteLine("3. Bell Hooks");
-        Console.WriteLine("4. Emily Henry");
-        Console.WriteLine("5. Colleen Hoover");
-        Console.WriteLine("6. Ilan Pappe");
-        // reading user's choice 
-        string authorChoice = Console.ReadLine();
-        if (authorChoice == "1")
-        {
-            Console.WriteLine("Pride and Prejudice");
+    static string[][][] books = {
+        new string[][] {
+            new[] { "Book Lovers", "Beach Read", "Happy Place" },
+            new[] { "The Kiss Quotient", "Bride's Test", "The Heart Principle" },
+            new[] { "The Love Hypothesis", "Love on the Brain", "Love Theortically" }
+        },
+        new string[][] {
+            new[] { "A thousand Splendid Suns", "The Kite Runner", "And the Mountains Echoed" },
+            new[] { "It Ends With Us", "Verity", "It Starts With Us" },
+            new[] { "The Wrath and The dawn", "The beautiful", "Flame in the Mist" }
+        },
+        new string[][] {
+            new[] { "All About Love", "Ain't I a Women", "Belonging" },
+            new[] { "Ten Myths About Isreal", "The Ethnic Cleansing of Palestine", "The Modern Middle East" },
+            new[] { "Feeding the World", "Enrgy and Civilization", "Global Catastrophes and Trends: The Next Fifty Years" }
         }
-        // finding the selected author
-        //var selectedAuthor = authors.FirstOrDefault(a => a.Name == authorChoice && a.Genre.Name == genreChoice);
+    };
 
-        // validating the selected author
-        //if (selectedAuthor == null)
-        //{
-        //    Console.WriteLine("Invalid author selection. Please try again.");
-        //return;
-        // }
-
-
-    }
-
-    [STAThread]
-    static void Main(string[] args)
+    static void Main()
     {
-        var romanceGenre = new Genre { Name = "Romance" };
-        var fictionGenre = new Genre { Name = "Fiction" };
-        var nonfictionGenre = new Genre { Name = "Nonfiction" };
-
-
-        var authors = new List<Author>
-        {
-            new Author { Name = "Jane Austin", Genre = romanceGenre },
-            new Author { Name = "Khalid Hoessini", Genre = fictionGenre },
-            new Author { Name = "Bell Hooks", Genre = nonfictionGenre },
-            new Author { Name = "Emily Henry", Genre = romanceGenre },
-            new Author { Name = "Colleen Hoover", Genre = fictionGenre },
-            new Author { Name = "Ilan Pappe", Genre = nonfictionGenre },
-            //add more authors 
-
-        };
-
-        var books = new List<Book>
-        {
-            new Book { Title = "Pride and Prejudice", Author = authors[0] },
-            new Book { Title = "Emma", Author = authors[0] },
-            new Book { Title = "The Kite Runner", Author = authors[1] },
-            new Book { Title = "A Thousand Splendid Suns", Author = authors[1] },
-            new Book { Title = "All About Love", Author = authors[2] },
-            new Book { Title = "Feminism is For Everybody", Author = authors[2] },
-            //add more books
-        };
-        //welcome message
-        Console.WriteLine(" Welcome to our book recommendation chat box!");
         while (true)
         {
-            RecommendBook(authors);
-            Console.WriteLine("Would you like another recommendation? (Y/N)");
-            string answer = Console.ReadLine();
-            if (answer.ToLower() != "y")
+            // Show the list of genres and ask the user to select one
+            Console.WriteLine("Select a genre:");
+            string[] genres = { "Romance", "Fiction", "Nonfiction" };
+            for (int i = 0; i < genres.Length; i++)
             {
-                break;
+                Console.WriteLine($"{i + 1}. {genres[i]}");
+            }
+            int genreIndex = int.Parse(Console.ReadLine()) - 1;
+
+            // Show the list of authors for the selected genre and ask the user to select one
+            Console.WriteLine($"Select an author from {genres[genreIndex]}:");
+            string[] authorList = authors[genreIndex];
+            for (int i = 0; i < authorList.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {authorList[i]}");
+            }
+            int authorIndex = int.Parse(Console.ReadLine()) - 1;
+
+            // Use LINQ to retrieve the list of books for the selected author
+            var bookList = books[genreIndex][authorIndex];
+
+            // Show the list of recommended books for the selected author
+            Console.WriteLine($"Recommended books for {authorList[authorIndex]}:");
+            for (int i = 0; i < bookList.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {bookList[i]}");
             }
 
+            // Ask if the user wants another recommendation
+            Console.WriteLine("Do you want another recommendation? (Y/N)");
+            string answer = Console.ReadLine().ToLower();
+            if (answer == "n")
+            {
+                return; // exit the program
+            }
         }
     }
 }
+
+
+
+
 
 
